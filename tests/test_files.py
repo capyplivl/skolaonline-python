@@ -18,13 +18,15 @@ def test_download_returns_content_and_metadata() -> None:
             content=b"%PDF-1.7",
             headers={
                 "Content-Type": "application/pdf; charset=binary",
-                "Content-Disposition": "attachment; filename*=UTF-8''%C3%BAkol.pdf",
+                "Content-Disposition": (
+                    "attachment; filename*=UTF-8''r%C3%A9sum%C3%A9.pdf"
+                ),
             },
         )
     )
     file = SkolaOnline(access_token="t").messages.download_attachment("m1", "a1")
     assert file == DownloadedFile(
-        content=b"%PDF-1.7", filename="úkol.pdf", content_type="application/pdf"
+        content=b"%PDF-1.7", filename="résumé.pdf", content_type="application/pdf"
     )
 
 
