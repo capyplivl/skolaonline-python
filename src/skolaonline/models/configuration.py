@@ -9,8 +9,8 @@ from skolaonline.models._base import SkolaOnlineModel
 @dataclass(kw_only=True)
 class MinAppVersion(SkolaOnlineModel):
     _field_aliases: ClassVar[dict[str, str]] = {
-        "i_os": "iOS",
+        "ios": "iOS",
     }
 
-    i_os: str | None = None
+    ios: str | None = None
     android: str | None = None
