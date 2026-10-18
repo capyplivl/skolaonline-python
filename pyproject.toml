@@ -1,0 +1,80 @@
+[project]
+name = "skolaonline"
+version = "0.1.0"
+description = "Python library for the Škola OnLine API"
+readme = "README.md"
+authors = [
+    { name = "Pavel Knespl", email = "pavel.knespl3@gmail.com" }
+]
+license = "MIT"
+license-files = ["LICENSE"]
+requires-python = ">=3.11"
+keywords = [
+    "api",
+    "async",
+    "bakalari",
+    "client",
+    "httpx",
+    "school",
+    "sdk",
+    "skolaonline",
+    "typed",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Topic :: Education",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Typing :: Typed",
+]
+dependencies = [
+    "httpx>=0.28.1",
+]
+
+[project.urls]
+Changelog = "https://github.com/capyplivl/skolaonline-python/blob/main/CHANGELOG.md"
+Documentation = "https://github.com/capyplivl/skolaonline-python#readme"
+Issues = "https://github.com/capyplivl/skolaonline-python/issues"
+Repository = "https://github.com/capyplivl/skolaonline-python"
+
+[dependency-groups]
+dev = [
+    "mypy>=2.4.0",
+    "pytest>=9.1.1",
+    "pytest-asyncio>=1.4.0",
+    "pytest-cov>=7.1.0",
+    "respx>=0.23.1",
+    "ruff>=0.17.1",
+]
+
+[build-system]
+requires = ["uv_build>=0.12.0,<0.13.0"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-name = "skolaonline"
+
+[tool.mypy]
+strict = true
+python_version = "3.11"
+files = ["src/skolaonline"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 88
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM", "C4", "RUF", "PT", "N"]
