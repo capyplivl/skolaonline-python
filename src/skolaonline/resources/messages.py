@@ -36,7 +36,7 @@ class Messages(SyncAPIResource):
     def list_received(
         self,
         *,
-        class_status: SenderPersonType | None = None,
+        sender_person_type: SenderPersonType | None = None,
         message_read_status: MessageReadStatus | None = None,
         date_from: DateLike | None = None,
         date_to: DateLike | None = None,
@@ -50,7 +50,7 @@ class Messages(SyncAPIResource):
             "GET",
             "/api/v1/messages/received",
             params={
-                "SenderPersonType": class_status,
+                "SenderPersonType": sender_person_type,
                 "MessageReadStatus": message_read_status,
                 "DateFrom": date_from,
                 "DateTo": date_to,
@@ -243,7 +243,7 @@ class AsyncMessages(AsyncAPIResource):
     async def list_received(
         self,
         *,
-        class_status: SenderPersonType | None = None,
+        sender_person_type: SenderPersonType | None = None,
         message_read_status: MessageReadStatus | None = None,
         date_from: DateLike | None = None,
         date_to: DateLike | None = None,
@@ -257,7 +257,7 @@ class AsyncMessages(AsyncAPIResource):
             "GET",
             "/api/v1/messages/received",
             params={
-                "SenderPersonType": class_status,
+                "SenderPersonType": sender_person_type,
                 "MessageReadStatus": message_read_status,
                 "DateFrom": date_from,
                 "DateTo": date_to,
