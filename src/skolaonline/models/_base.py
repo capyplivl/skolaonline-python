@@ -12,6 +12,7 @@ from skolaonline._serialization import parse_datetime
 
 
 def to_camel_case(name: str) -> str:
+    """Convert a snake_case field name to the lowerCamelCase API name."""
     head, *tail = name.split("_")
     return head + "".join(part[:1].upper() + part[1:] for part in tail)
 
@@ -102,10 +103,28 @@ def _field_specs(cls: type[SkolaOnlineModel]) -> tuple[_FieldSpec, ...]:
 
 
 class SkolaOnlineModel:
+    """Base class of all API models.
+
+    Models are dataclasses with snake_case fields. Field names are converted to the
+    lowerCamelCase API names unless an explicit alias is defined.
+    """
+
     _field_aliases: ClassVar[dict[str, str]] = {}
 
     @classmethod
     def from_dict(cls, data: Mapping[str, Any]) -> Self:
+        """Create a model from decoded API data.
+
+        Nested models, enums and dates are converted to their Python types. Enum
+        values unknown to the library are kept as strings. Missing required fields
+        are set to None and unknown keys are ignored.
+
+        Args:
+            data: Decoded JSON object returned by the API.
+
+        Returns:
+            Model populated with the data.
+        """
         kwargs: dict[str, Any] = {}
         for spec in _field_specs(cls):
             if spec.key in data:
@@ -115,6 +134,14 @@ class SkolaOnlineModel:
         return cls(**kwargs)
 
     def to_dict(self) -> dict[str, Any]:
+        """Convert the model to the JSON representation used by the API.
+
+        Optional fields set to None are omitted. Required fields are always
+        included.
+
+        Returns:
+            Dictionary with API field names that can be serialized to JSON.
+        """
         result: dict[str, Any] = {}
         for spec in _field_specs(type(self)):
             value = getattr(self, spec.name)

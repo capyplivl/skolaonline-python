@@ -19,6 +19,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - API key and HTTP Basic authentication.
 - File downloads with `DownloadedFile` and multipart uploads.
 - Exception hierarchy mapped from HTTP status codes.
+- English docstrings for all endpoints, parameters, models, fields and enum
+  members.
 
 [Unreleased]: https://github.com/capyplivl/skolaonline-python/compare/v0.1.0...HEAD
 [0.1.0]: https://github.com/capyplivl/skolaonline-python/releases/tag/v0.1.0

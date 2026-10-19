@@ -9,15 +9,28 @@ import httpx
 from skolaonline._types import FileContent, FileInput
 
 DEFAULT_FILENAME = "file"
+"""File name used for uploads of raw bytes."""
 
 
 @dataclass(frozen=True)
 class DownloadedFile:
+    """File downloaded from the API."""
+
     content: bytes
+    """Raw content of the file."""
+
     filename: str | None = None
+    """File name from the Content-Disposition header."""
+
     content_type: str | None = None
+    """Media type from the Content-Type header, without parameters."""
 
     def save(self, path: str | os.PathLike[str]) -> None:
+        """Write the content to a file.
+
+        Args:
+            path: Path of the file to write. An existing file is overwritten.
+        """
         with open(path, "wb") as fh:
             fh.write(self.content)
 
@@ -32,6 +45,7 @@ def _filename_from_headers(headers: httpx.Headers) -> str | None:
 
 
 def downloaded_file(response: httpx.Response) -> DownloadedFile:
+    """Create a downloaded file from a binary response."""
     content_type = response.headers.get("content-type")
     return DownloadedFile(
         content=response.content,
@@ -50,6 +64,7 @@ def _default_filename(content: FileContent) -> str:
 def to_multipart(
     field: str, file: FileInput
 ) -> tuple[str, tuple[str, FileContent] | tuple[str, FileContent, str]]:
+    """Convert a file input to an HTTPX multipart entry for a form field."""
     if isinstance(file, tuple):
         return field, file
     return field, (_default_filename(file), file)

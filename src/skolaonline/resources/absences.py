@@ -17,10 +17,19 @@ from skolaonline.resources._base import (
 
 
 class Absences(SyncAPIResource):
+    """Endpoints for absences of students."""
+
     def code_lists(
         self, *, school_year_id: str | None = None
     ) -> AbsenceCodeListsResponse:
-        """Return the code lists used by the absences module."""
+        """Return the code lists used by the absences module.
+
+        Args:
+            school_year_id: ID of the school year. Defaults to the current school year.
+
+        Returns:
+            Code lists used by the absences module.
+        """
         response = self._request(
             "GET", "/api/v1/absences/codeLists", params={"schoolYearId": school_year_id}
         )
@@ -34,7 +43,17 @@ class Absences(SyncAPIResource):
         state: AbsenceInPeriodFilterState | None = None,
         student_id: str | None = None,
     ) -> AbsenceInPeriodResponse:
-        """Return absences in a date range for the user or the given child."""
+        """Return absences in a date range for the user or the given child.
+
+        Args:
+            date_from: Start of the date range.
+            date_to: End of the date range.
+            state: Absence state filter. Defaults to all absences.
+            student_id: ID of the child whose absences are returned. Used by parents.
+
+        Returns:
+            Absences in a date range.
+        """
         response = self._request(
             "GET",
             "/api/v1/absences/inPeriod",
@@ -50,7 +69,15 @@ class Absences(SyncAPIResource):
     def list_in_day(
         self, *, date: DateLike, student_id: str | None = None
     ) -> AbsenceInDayResponse:
-        """Return absences on a single day for the user or the given child."""
+        """Return absences on a single day for the user or the given child.
+
+        Args:
+            date: Day to return absences for.
+            student_id: ID of the child whose absences are returned. Used by parents.
+
+        Returns:
+            Absences on a single day.
+        """
         response = self._request(
             "GET",
             "/api/v1/absences/inDay",
@@ -66,7 +93,17 @@ class Absences(SyncAPIResource):
         sort: AbsenceInSubjectFilterOrder | None = None,
         student_id: str | None = None,
     ) -> AbsenceInSubjectResponse:
-        """Return absences grouped by subject for the user or the given child."""
+        """Return absences grouped by subject for the user or the given child.
+
+        Args:
+            date_from: Start of the date range.
+            date_to: End of the date range.
+            sort: Sort order of absences by subject.
+            student_id: ID of the child whose absences are returned. Used by parents.
+
+        Returns:
+            Absences grouped by subject.
+        """
         response = self._request(
             "GET",
             "/api/v1/absences/inSubject",
@@ -81,10 +118,19 @@ class Absences(SyncAPIResource):
 
 
 class AsyncAbsences(AsyncAPIResource):
+    """Asynchronous endpoints for absences of students."""
+
     async def code_lists(
         self, *, school_year_id: str | None = None
     ) -> AbsenceCodeListsResponse:
-        """Return the code lists used by the absences module."""
+        """Return the code lists used by the absences module.
+
+        Args:
+            school_year_id: ID of the school year. Defaults to the current school year.
+
+        Returns:
+            Code lists used by the absences module.
+        """
         response = await self._request(
             "GET", "/api/v1/absences/codeLists", params={"schoolYearId": school_year_id}
         )
@@ -98,7 +144,17 @@ class AsyncAbsences(AsyncAPIResource):
         state: AbsenceInPeriodFilterState | None = None,
         student_id: str | None = None,
     ) -> AbsenceInPeriodResponse:
-        """Return absences in a date range for the user or the given child."""
+        """Return absences in a date range for the user or the given child.
+
+        Args:
+            date_from: Start of the date range.
+            date_to: End of the date range.
+            state: Absence state filter. Defaults to all absences.
+            student_id: ID of the child whose absences are returned. Used by parents.
+
+        Returns:
+            Absences in a date range.
+        """
         response = await self._request(
             "GET",
             "/api/v1/absences/inPeriod",
@@ -114,7 +170,15 @@ class AsyncAbsences(AsyncAPIResource):
     async def list_in_day(
         self, *, date: DateLike, student_id: str | None = None
     ) -> AbsenceInDayResponse:
-        """Return absences on a single day for the user or the given child."""
+        """Return absences on a single day for the user or the given child.
+
+        Args:
+            date: Day to return absences for.
+            student_id: ID of the child whose absences are returned. Used by parents.
+
+        Returns:
+            Absences on a single day.
+        """
         response = await self._request(
             "GET",
             "/api/v1/absences/inDay",
@@ -130,7 +194,17 @@ class AsyncAbsences(AsyncAPIResource):
         sort: AbsenceInSubjectFilterOrder | None = None,
         student_id: str | None = None,
     ) -> AbsenceInSubjectResponse:
-        """Return absences grouped by subject for the user or the given child."""
+        """Return absences grouped by subject for the user or the given child.
+
+        Args:
+            date_from: Start of the date range.
+            date_to: End of the date range.
+            sort: Sort order of absences by subject.
+            student_id: ID of the child whose absences are returned. Used by parents.
+
+        Returns:
+            Absences grouped by subject.
+        """
         response = await self._request(
             "GET",
             "/api/v1/absences/inSubject",

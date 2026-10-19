@@ -21,6 +21,8 @@ This is an unofficial library and is not affiliated with BAKALÁŘI software s.r
 - File downloads and multipart uploads
 - Typed exception hierarchy for API errors
 - Full type annotations and `py.typed` support
+- English docstrings for every endpoint, parameter, model field and enum member,
+  shown by IDE autocompletion
 
 ## Installation
 

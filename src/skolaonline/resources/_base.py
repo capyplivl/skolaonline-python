@@ -16,10 +16,12 @@ M = TypeVar("M", bound=SkolaOnlineModel)
 
 
 def encode_path(value: object) -> str:
+    """Percent-encode a value for use as a single path segment."""
     return quote(str(value), safe="")
 
 
 def parse_json(response: httpx.Response) -> Any:
+    """Return the decoded JSON body, the text body, or None for an empty body."""
     if not response.content:
         return None
     try:
@@ -29,18 +31,23 @@ def parse_json(response: httpx.Response) -> Any:
 
 
 def parse_model(response: httpx.Response, model: type[M]) -> M:
+    """Parse a JSON object response into a model."""
     return model.from_dict(response.json())
 
 
 def parse_model_list(response: httpx.Response, model: type[M]) -> list[M]:
+    """Parse a JSON array response into a list of models."""
     return [model.from_dict(item) for item in response.json()]
 
 
 def parse_int(response: httpx.Response) -> int:
+    """Parse a JSON number response into an integer."""
     return int(response.json())
 
 
 class SyncAPIResource:
+    """Base class of resources used by the synchronous client."""
+
     def __init__(self, client: SkolaOnline) -> None:
         self._client = client
 
@@ -60,6 +67,8 @@ class SyncAPIResource:
 
 
 class AsyncAPIResource:
+    """Base class of resources used by the asynchronous client."""
+
     def __init__(self, client: AsyncSkolaOnline) -> None:
         self._client = client
 

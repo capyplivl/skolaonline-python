@@ -16,15 +16,31 @@ from skolaonline.resources._base import (
 
 
 class Files(SyncAPIResource):
+    """Endpoints for the temporary file storage."""
+
     def download(self, file_id: str) -> DownloadedFile:
-        """Download a file from the temporary storage."""
+        """Download a file from the temporary storage.
+
+        Args:
+            file_id: ID of the file.
+
+        Returns:
+            Downloaded file with its name and content type.
+        """
         response = self._request(
             "GET", f"/api/v1/files/{encode_path(file_id)}/download"
         )
         return downloaded_file(response)
 
     def upload(self, files: Sequence[FileInput]) -> FilesUploadResponse:
-        """Upload files to the temporary storage."""
+        """Upload files to the temporary storage.
+
+        Args:
+            files: Files to upload.
+
+        Returns:
+            Result of uploading files.
+        """
         response = self._request(
             "POST",
             "/api/v1/files/upload",
@@ -34,15 +50,31 @@ class Files(SyncAPIResource):
 
 
 class AsyncFiles(AsyncAPIResource):
+    """Asynchronous endpoints for the temporary file storage."""
+
     async def download(self, file_id: str) -> DownloadedFile:
-        """Download a file from the temporary storage."""
+        """Download a file from the temporary storage.
+
+        Args:
+            file_id: ID of the file.
+
+        Returns:
+            Downloaded file with its name and content type.
+        """
         response = await self._request(
             "GET", f"/api/v1/files/{encode_path(file_id)}/download"
         )
         return downloaded_file(response)
 
     async def upload(self, files: Sequence[FileInput]) -> FilesUploadResponse:
-        """Upload files to the temporary storage."""
+        """Upload files to the temporary storage.
+
+        Args:
+            files: Files to upload.
+
+        Returns:
+            Result of uploading files.
+        """
         response = await self._request(
             "POST",
             "/api/v1/files/upload",

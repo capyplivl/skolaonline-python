@@ -18,8 +18,17 @@ from skolaonline.resources._base import (
 
 
 class Payments(SyncAPIResource):
+    """Endpoints for payments of students."""
+
     def retrieve_summary(self, student_id: str) -> PaymentsSummary:
-        """Return the summary of regular payments of a student."""
+        """Return the summary of regular payments of a student.
+
+        Args:
+            student_id: ID of the student.
+
+        Returns:
+            Summary of the regular payments of a student.
+        """
         response = self._request(
             "GET",
             f"/api/v1/student/{encode_path(student_id)}/payments/regularpayments/summary",
@@ -34,7 +43,17 @@ class Payments(SyncAPIResource):
         page_number: int | None = None,
         page_size: int | None = None,
     ) -> AllPayments:
-        """Return regular payments of a student."""
+        """Return regular payments of a student.
+
+        Args:
+            student_id: ID of the student.
+            state: Payment states to return.
+            page_number: Page number, starting at 1.
+            page_size: Page size.
+
+        Returns:
+            Regular payments of a student.
+        """
         response = self._request(
             "GET",
             f"/api/v1/student/{encode_path(student_id)}/payments/regularpayments",
@@ -47,7 +66,14 @@ class Payments(SyncAPIResource):
         return parse_model(response, AllPayments)
 
     def retrieve(self, payment_id: str) -> SinglePayment:
-        """Return a single payment."""
+        """Return a single payment.
+
+        Args:
+            payment_id: ID of the payment order.
+
+        Returns:
+            Payment order.
+        """
         response = self._request(
             "GET", f"/api/v1/student/payments/{encode_path(payment_id)}"
         )
@@ -56,7 +82,15 @@ class Payments(SyncAPIResource):
     def update_parents_note(
         self, payment_id: str, body: PaymentParentsNote
     ) -> PaymentParentsNote:
-        """Update the parents note of a payment."""
+        """Update the parents note of a payment.
+
+        Args:
+            payment_id: ID of the payment order.
+            body: Note of the legal representative.
+
+        Returns:
+            Note of a legal representative on a payment.
+        """
         response = self._request(
             "PUT",
             f"/api/v1/student/payments/{encode_path(payment_id)}",
@@ -66,8 +100,17 @@ class Payments(SyncAPIResource):
 
 
 class AsyncPayments(AsyncAPIResource):
+    """Asynchronous endpoints for payments of students."""
+
     async def retrieve_summary(self, student_id: str) -> PaymentsSummary:
-        """Return the summary of regular payments of a student."""
+        """Return the summary of regular payments of a student.
+
+        Args:
+            student_id: ID of the student.
+
+        Returns:
+            Summary of the regular payments of a student.
+        """
         response = await self._request(
             "GET",
             f"/api/v1/student/{encode_path(student_id)}/payments/regularpayments/summary",
@@ -82,7 +125,17 @@ class AsyncPayments(AsyncAPIResource):
         page_number: int | None = None,
         page_size: int | None = None,
     ) -> AllPayments:
-        """Return regular payments of a student."""
+        """Return regular payments of a student.
+
+        Args:
+            student_id: ID of the student.
+            state: Payment states to return.
+            page_number: Page number, starting at 1.
+            page_size: Page size.
+
+        Returns:
+            Regular payments of a student.
+        """
         response = await self._request(
             "GET",
             f"/api/v1/student/{encode_path(student_id)}/payments/regularpayments",
@@ -95,7 +148,14 @@ class AsyncPayments(AsyncAPIResource):
         return parse_model(response, AllPayments)
 
     async def retrieve(self, payment_id: str) -> SinglePayment:
-        """Return a single payment."""
+        """Return a single payment.
+
+        Args:
+            payment_id: ID of the payment order.
+
+        Returns:
+            Payment order.
+        """
         response = await self._request(
             "GET", f"/api/v1/student/payments/{encode_path(payment_id)}"
         )
@@ -104,7 +164,15 @@ class AsyncPayments(AsyncAPIResource):
     async def update_parents_note(
         self, payment_id: str, body: PaymentParentsNote
     ) -> PaymentParentsNote:
-        """Update the parents note of a payment."""
+        """Update the parents note of a payment.
+
+        Args:
+            payment_id: ID of the payment order.
+            body: Note of the legal representative.
+
+        Returns:
+            Note of a legal representative on a payment.
+        """
         response = await self._request(
             "PUT",
             f"/api/v1/student/payments/{encode_path(payment_id)}",

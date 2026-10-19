@@ -14,6 +14,8 @@ from skolaonline.resources._base import (
 
 
 class Timetable(SyncAPIResource):
+    """Endpoints for the timetable."""
+
     def retrieve(
         self,
         *,
@@ -25,7 +27,20 @@ class Timetable(SyncAPIResource):
         subject_id: str | None = None,
         class_id: str | None = None,
     ) -> TimetableResponse:
-        """Return the timetable for the selected period."""
+        """Return the timetable for the selected period.
+
+        Args:
+            school_year_id: ID of the requested school year.
+            date_from: First day of the timetable.
+            date_to: Last day of the timetable.
+            student_id: ID of the student.
+            lesson_id: ID of the lesson.
+            subject_id: ID of the subject.
+            class_id: ID of the class.
+
+        Returns:
+            Timetable for a date range.
+        """
         response = self._request(
             "GET",
             "/api/v1/timeTable",
@@ -44,7 +59,15 @@ class Timetable(SyncAPIResource):
     def code_lists(
         self, *, school_year_id: str | None = None, student_id: str | None = None
     ) -> TimetableCodeListsResponse:
-        """Return the code lists used by the timetable module."""
+        """Return the code lists used by the timetable module.
+
+        Args:
+            school_year_id: ID of the school year. Defaults to the current school year.
+            student_id: ID of the student. Used by parents.
+
+        Returns:
+            Code lists used by the timetable module.
+        """
         response = self._request(
             "GET",
             "/api/v1/timeTable/codeLists",
@@ -60,7 +83,17 @@ class Timetable(SyncAPIResource):
         school_year_id: str | None = None,
         student_id: str | None = None,
     ) -> TimetableDetailResponse:
-        """Return the detail of a scheduled event."""
+        """Return the detail of a scheduled event.
+
+        Args:
+            event_id: ID of the scheduled event.
+            event_order: Order of the scheduled event.
+            school_year_id: ID of the requested school year.
+            student_id: ID of the student.
+
+        Returns:
+            Detail of a scheduled event.
+        """
         response = self._request(
             "GET",
             "/api/v1/timeTableDetail",
@@ -75,6 +108,8 @@ class Timetable(SyncAPIResource):
 
 
 class AsyncTimetable(AsyncAPIResource):
+    """Asynchronous endpoints for the timetable."""
+
     async def retrieve(
         self,
         *,
@@ -86,7 +121,20 @@ class AsyncTimetable(AsyncAPIResource):
         subject_id: str | None = None,
         class_id: str | None = None,
     ) -> TimetableResponse:
-        """Return the timetable for the selected period."""
+        """Return the timetable for the selected period.
+
+        Args:
+            school_year_id: ID of the requested school year.
+            date_from: First day of the timetable.
+            date_to: Last day of the timetable.
+            student_id: ID of the student.
+            lesson_id: ID of the lesson.
+            subject_id: ID of the subject.
+            class_id: ID of the class.
+
+        Returns:
+            Timetable for a date range.
+        """
         response = await self._request(
             "GET",
             "/api/v1/timeTable",
@@ -105,7 +153,15 @@ class AsyncTimetable(AsyncAPIResource):
     async def code_lists(
         self, *, school_year_id: str | None = None, student_id: str | None = None
     ) -> TimetableCodeListsResponse:
-        """Return the code lists used by the timetable module."""
+        """Return the code lists used by the timetable module.
+
+        Args:
+            school_year_id: ID of the school year. Defaults to the current school year.
+            student_id: ID of the student. Used by parents.
+
+        Returns:
+            Code lists used by the timetable module.
+        """
         response = await self._request(
             "GET",
             "/api/v1/timeTable/codeLists",
@@ -121,7 +177,17 @@ class AsyncTimetable(AsyncAPIResource):
         school_year_id: str | None = None,
         student_id: str | None = None,
     ) -> TimetableDetailResponse:
-        """Return the detail of a scheduled event."""
+        """Return the detail of a scheduled event.
+
+        Args:
+            event_id: ID of the scheduled event.
+            event_order: Order of the scheduled event.
+            school_year_id: ID of the requested school year.
+            student_id: ID of the student.
+
+        Returns:
+            Detail of a scheduled event.
+        """
         response = await self._request(
             "GET",
             "/api/v1/timeTableDetail",

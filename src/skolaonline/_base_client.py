@@ -20,6 +20,7 @@ from skolaonline._exceptions import SkolaOnlineError
 from skolaonline._serialization import build_headers, build_query_params
 
 USER_AGENT = f"skolaonline-python/{version('skolaonline')}"
+"""User-Agent header sent with every request."""
 
 
 def build_auth(
@@ -37,6 +38,12 @@ def build_auth(
     timeout: float,
     on_token_refresh: TokenCallback | None,
 ) -> httpx.Auth | None:
+    """Create the authentication matching the given client arguments.
+
+    Raises:
+        SkolaOnlineError: The arguments combine several authentication methods or
+            give only one of username and password.
+    """
     oauth = (
         username is not None
         or password is not None
@@ -76,6 +83,8 @@ def build_auth(
 
 
 class BaseClient:
+    """Configuration and request building shared by both clients."""
+
     def __init__(
         self,
         *,
@@ -95,8 +104,11 @@ class BaseClient:
         on_token_refresh: TokenCallback | None = None,
     ) -> None:
         self.base_url = base_url.rstrip("/")
+        """API root without a trailing slash."""
         self.language = language
+        """Language sent in the app-lang header, or None for the API default."""
         self.timeout = timeout
+        """Timeout of API requests in seconds."""
         self._headers = {
             "Accept": "application/json",
             "User-Agent": USER_AGENT,
@@ -119,6 +131,7 @@ class BaseClient:
 
     @property
     def token(self) -> Token | None:
+        """Current OAuth2 token, or None before the first sign in."""
         if isinstance(self._auth, OAuth2Auth):
             return self._auth.token
         return None

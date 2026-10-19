@@ -29,8 +29,14 @@ from skolaonline.resources._base import (
 
 
 class Behaviors(SyncAPIResource):
+    """Endpoints for behavior records of students."""
+
     def list_types(self) -> TypesOfBehaviorResponse:
-        """Return the types of behavior records."""
+        """Return the types of behavior records.
+
+        Returns:
+            Types of behavior records.
+        """
         response = self._request("GET", "/api/v1/behaviors/typesOfBehavior")
         return parse_model(response, TypesOfBehaviorResponse)
 
@@ -42,7 +48,17 @@ class Behaviors(SyncAPIResource):
         only_positive: bool | None = None,
         only_negative: bool | None = None,
     ) -> KindsOfNotesClassBookResponse:
-        """Return the kinds of class book notes."""
+        """Return the kinds of class book notes.
+
+        Args:
+            kind_id: ID of the kind of note.
+            only_valid: Return only currently valid kinds.
+            only_positive: Return only positive kinds.
+            only_negative: Return only negative kinds.
+
+        Returns:
+            Kinds of class book notes.
+        """
         response = self._request(
             "GET",
             "/api/v1/behaviors/kindsOfNotesClassBook",
@@ -63,7 +79,17 @@ class Behaviors(SyncAPIResource):
         only_positive: bool | None = None,
         only_negative: bool | None = None,
     ) -> KindsOfEducationalMeasuresResponse:
-        """Return the kinds of educational measures."""
+        """Return the kinds of educational measures.
+
+        Args:
+            kind_id: ID of the kind of educational measure.
+            only_valid: Return only currently valid kinds.
+            only_positive: Return only positive kinds.
+            only_negative: Return only negative kinds.
+
+        Returns:
+            Kinds of educational measures.
+        """
         response = self._request(
             "GET",
             "/api/v1/behaviors/kindsOfEducationalMeasures",
@@ -85,7 +111,18 @@ class Behaviors(SyncAPIResource):
         only_positive: bool | None = None,
         only_negative: bool | None = None,
     ) -> ReasonsOfEducationalMeasuresResponse:
-        """Return the reasons available for educational measures."""
+        """Return the reasons available for educational measures.
+
+        Args:
+            reason_id: ID of the reason.
+            search: Text the reason starts with or contains.
+            only_valid: Return only currently valid reasons.
+            only_positive: Return only positive reasons.
+            only_negative: Return only negative reasons.
+
+        Returns:
+            Reasons for educational measures.
+        """
         response = self._request(
             "GET",
             "/api/v1/teacher/behaviors/reasonsOfEducationalMeasures",
@@ -102,7 +139,15 @@ class Behaviors(SyncAPIResource):
     def list_evaluation_kinds(
         self, *, kind_id: str | None = None, school_year_id: str | None = None
     ) -> KindsOfBehaviorEvaluationsResponse:
-        """Return the kinds of behavior evaluations."""
+        """Return the kinds of behavior evaluations.
+
+        Args:
+            kind_id: ID of the kind of behavior evaluation.
+            school_year_id: ID of the requested school year.
+
+        Returns:
+            Kinds of behavior evaluations.
+        """
         response = self._request(
             "GET",
             "/api/v1/behaviors/kindsOfBehaviorEvaluations",
@@ -113,7 +158,17 @@ class Behaviors(SyncAPIResource):
     def list_teacher_classes(
         self, *, class_status: ClassStatus, school_year_id: str | None = None
     ) -> BehaviorClassesResponse:
-        """Return elementary and higher classes of the requested school year."""
+        """Return elementary and higher classes of the requested school year.
+
+        Args:
+            class_status: Which classes are returned: all classes, classes where the
+                user is the class teacher, or classes where the user is the class
+                teacher or deputy.
+            school_year_id: ID of the requested school year.
+
+        Returns:
+            Classes available in the behaviors module.
+        """
         response = self._request(
             "GET",
             "/api/v1/teacher/behaviors/classes",
@@ -128,7 +183,16 @@ class Behaviors(SyncAPIResource):
         school_year_id: str | None = None,
         to_date: DateLike | None = None,
     ) -> StudentsOfClassResponse:
-        """Return the students of a class on a given date."""
+        """Return the students of a class on a given date.
+
+        Args:
+            class_id: ID of the class.
+            school_year_id: ID of the requested school year.
+            to_date: Date on which the class membership is evaluated.
+
+        Returns:
+            Students of a class.
+        """
         response = self._request(
             "GET",
             "/api/v1/teacher/behaviors/studentsOfClass",
@@ -157,7 +221,28 @@ class Behaviors(SyncAPIResource):
         page_number: int | None = None,
         page_size: int | None = None,
     ) -> BehaviorsResponse:
-        """Return behavior records of students matching the filter."""
+        """Return behavior records of students matching the filter.
+
+        Args:
+            school_year_id: ID of the requested school year.
+            from_date: Return records given on or after this date.
+            to_date: Return records given on or before this date.
+            class_id: ID of the class.
+            student_id: ID of the student.
+            type_of_behavior_id: Type of behavior record: N for a class book note, V for
+                an educational measure, Z for a behavior mark, P for a behavior
+                percentage.
+            kind_of_notes_class_book_id: ID of the kind of class book note.
+            kind_of_educational_measures_id: ID of the kind of educational measure.
+            kind_of_behavior_evaluations_id: ID of the kind of behavior evaluation.
+            order_by: Sort order. Defaults to newest first.
+            search: Full-text search.
+            page_number: Page number, starting at 1.
+            page_size: Page size.
+
+        Returns:
+            Behavior records matching a filter.
+        """
         response = self._request(
             "GET",
             "/api/v1/teacher/behaviors",
@@ -180,7 +265,11 @@ class Behaviors(SyncAPIResource):
         return parse_model(response, BehaviorsResponse)
 
     def create(self, body: PostBehaviorRequest) -> None:
-        """Create a new behavior record."""
+        """Create a new behavior record.
+
+        Args:
+            body: Data of the new record.
+        """
         self._request("POST", "/api/v1/teacher/behaviors", json=body.to_dict())
 
     def list_for_student(
@@ -199,7 +288,27 @@ class Behaviors(SyncAPIResource):
         search: str | None = None,
         records_filter: RecordsFilter | None = None,
     ) -> StudentBehaviorsResponse:
-        """Return behavior records of a student matching the filter."""
+        """Return behavior records of a student matching the filter.
+
+        Args:
+            student_id: ID of the student.
+            school_year_id: ID of the requested school year.
+            from_date: Return records given on or after this date.
+            to_date: Return records given on or before this date.
+            type_of_behavior_id: Type of behavior record: N for a class book note, V for
+                an educational measure, Z for a behavior mark, P for a behavior
+                percentage.
+            kind_of_notes_class_book_id: ID of the kind of class book note.
+            kind_of_educational_measures_id: ID of the kind of educational measure.
+            kind_of_behavior_evaluations_id: ID of the kind of behavior evaluation.
+            page_number: Page number, starting at 1.
+            page_size: Page size.
+            search: Full-text search.
+            records_filter: Filter of the records. Defaults to all records.
+
+        Returns:
+            Behavior records of a student.
+        """
         response = self._request(
             "GET",
             f"/api/v1/students/{encode_path(student_id)}/behaviors",
@@ -227,7 +336,19 @@ class Behaviors(SyncAPIResource):
         type_of_behavior_id: str,
         student_id: str | None = None,
     ) -> StudentBehaviorResponse:
-        """Return a single behavior record of a student."""
+        """Return a single behavior record of a student.
+
+        Args:
+            behavior_id: ID of the behavior record.
+            school_year_id: ID of the requested school year.
+            type_of_behavior_id: Type of behavior record: N for a class book note, V for
+                an educational measure, Z for a behavior mark, P for a behavior
+                percentage.
+            student_id: ID of the student.
+
+        Returns:
+            Single behavior record of a student.
+        """
         response = self._request(
             "GET",
             f"/api/v1/students/behaviors/{encode_path(behavior_id)}",
@@ -242,7 +363,14 @@ class Behaviors(SyncAPIResource):
     def code_lists(
         self, *, school_year_id: str | None = None
     ) -> BehaviorCodeListsResponse:
-        """Return the code lists used by the behaviors module."""
+        """Return the code lists used by the behaviors module.
+
+        Args:
+            school_year_id: ID of the school year. Defaults to the current school year.
+
+        Returns:
+            Code lists used by the behaviors module.
+        """
         response = self._request(
             "GET",
             "/api/v1/behaviors/codeLists",
@@ -251,7 +379,12 @@ class Behaviors(SyncAPIResource):
         return parse_model(response, BehaviorCodeListsResponse)
 
     def update(self, behavior_id: str, body: PutBehaviorRequest) -> None:
-        """Update an existing behavior record."""
+        """Update an existing behavior record.
+
+        Args:
+            behavior_id: ID of the behavior record.
+            body: Updated behavior record.
+        """
         self._request(
             "PUT",
             f"/api/v1/teacher/behaviors/{encode_path(behavior_id)}",
@@ -261,7 +394,13 @@ class Behaviors(SyncAPIResource):
     def delete(
         self, behavior_id: str, *, type_of_behavior_id: str, school_year_id: str
     ) -> None:
-        """Delete a behavior record."""
+        """Delete a behavior record.
+
+        Args:
+            behavior_id: ID of the behavior record.
+            type_of_behavior_id: Type of the behavior record.
+            school_year_id: ID of the school year of the behavior record.
+        """
         self._request(
             "DELETE",
             f"/api/v1/teacher/behaviors/{encode_path(behavior_id)}",
@@ -274,7 +413,15 @@ class Behaviors(SyncAPIResource):
     def sign(
         self, behavior_id: str, *, type_of_behavior_id: str, school_year_id: str
     ) -> None:
-        """Sign a single behavior record."""
+        """Sign a single behavior record.
+
+        Args:
+            behavior_id: ID of the behavior record.
+            type_of_behavior_id: Type of behavior record: N for a class book note, V for
+                an educational measure, Z for a behavior mark, P for a behavior
+                percentage.
+            school_year_id: ID of the requested school year.
+        """
         self._request(
             "PUT",
             f"/api/v1/student/behaviors/{encode_path(behavior_id)}/sign",
@@ -285,7 +432,12 @@ class Behaviors(SyncAPIResource):
         )
 
     def sign_many(self, student_id: str, body: PutMultipleSignBehaviorsRequest) -> None:
-        """Sign multiple behavior records of a student."""
+        """Sign multiple behavior records of a student.
+
+        Args:
+            student_id: ID of the student.
+            body: Behavior records to sign.
+        """
         self._request(
             "PUT",
             f"/api/v1/student/{encode_path(student_id)}/behaviors/sign",
@@ -294,8 +446,14 @@ class Behaviors(SyncAPIResource):
 
 
 class AsyncBehaviors(AsyncAPIResource):
+    """Asynchronous endpoints for behavior records of students."""
+
     async def list_types(self) -> TypesOfBehaviorResponse:
-        """Return the types of behavior records."""
+        """Return the types of behavior records.
+
+        Returns:
+            Types of behavior records.
+        """
         response = await self._request("GET", "/api/v1/behaviors/typesOfBehavior")
         return parse_model(response, TypesOfBehaviorResponse)
 
@@ -307,7 +465,17 @@ class AsyncBehaviors(AsyncAPIResource):
         only_positive: bool | None = None,
         only_negative: bool | None = None,
     ) -> KindsOfNotesClassBookResponse:
-        """Return the kinds of class book notes."""
+        """Return the kinds of class book notes.
+
+        Args:
+            kind_id: ID of the kind of note.
+            only_valid: Return only currently valid kinds.
+            only_positive: Return only positive kinds.
+            only_negative: Return only negative kinds.
+
+        Returns:
+            Kinds of class book notes.
+        """
         response = await self._request(
             "GET",
             "/api/v1/behaviors/kindsOfNotesClassBook",
@@ -328,7 +496,17 @@ class AsyncBehaviors(AsyncAPIResource):
         only_positive: bool | None = None,
         only_negative: bool | None = None,
     ) -> KindsOfEducationalMeasuresResponse:
-        """Return the kinds of educational measures."""
+        """Return the kinds of educational measures.
+
+        Args:
+            kind_id: ID of the kind of educational measure.
+            only_valid: Return only currently valid kinds.
+            only_positive: Return only positive kinds.
+            only_negative: Return only negative kinds.
+
+        Returns:
+            Kinds of educational measures.
+        """
         response = await self._request(
             "GET",
             "/api/v1/behaviors/kindsOfEducationalMeasures",
@@ -350,7 +528,18 @@ class AsyncBehaviors(AsyncAPIResource):
         only_positive: bool | None = None,
         only_negative: bool | None = None,
     ) -> ReasonsOfEducationalMeasuresResponse:
-        """Return the reasons available for educational measures."""
+        """Return the reasons available for educational measures.
+
+        Args:
+            reason_id: ID of the reason.
+            search: Text the reason starts with or contains.
+            only_valid: Return only currently valid reasons.
+            only_positive: Return only positive reasons.
+            only_negative: Return only negative reasons.
+
+        Returns:
+            Reasons for educational measures.
+        """
         response = await self._request(
             "GET",
             "/api/v1/teacher/behaviors/reasonsOfEducationalMeasures",
@@ -367,7 +556,15 @@ class AsyncBehaviors(AsyncAPIResource):
     async def list_evaluation_kinds(
         self, *, kind_id: str | None = None, school_year_id: str | None = None
     ) -> KindsOfBehaviorEvaluationsResponse:
-        """Return the kinds of behavior evaluations."""
+        """Return the kinds of behavior evaluations.
+
+        Args:
+            kind_id: ID of the kind of behavior evaluation.
+            school_year_id: ID of the requested school year.
+
+        Returns:
+            Kinds of behavior evaluations.
+        """
         response = await self._request(
             "GET",
             "/api/v1/behaviors/kindsOfBehaviorEvaluations",
@@ -378,7 +575,17 @@ class AsyncBehaviors(AsyncAPIResource):
     async def list_teacher_classes(
         self, *, class_status: ClassStatus, school_year_id: str | None = None
     ) -> BehaviorClassesResponse:
-        """Return elementary and higher classes of the requested school year."""
+        """Return elementary and higher classes of the requested school year.
+
+        Args:
+            class_status: Which classes are returned: all classes, classes where the
+                user is the class teacher, or classes where the user is the class
+                teacher or deputy.
+            school_year_id: ID of the requested school year.
+
+        Returns:
+            Classes available in the behaviors module.
+        """
         response = await self._request(
             "GET",
             "/api/v1/teacher/behaviors/classes",
@@ -393,7 +600,16 @@ class AsyncBehaviors(AsyncAPIResource):
         school_year_id: str | None = None,
         to_date: DateLike | None = None,
     ) -> StudentsOfClassResponse:
-        """Return the students of a class on a given date."""
+        """Return the students of a class on a given date.
+
+        Args:
+            class_id: ID of the class.
+            school_year_id: ID of the requested school year.
+            to_date: Date on which the class membership is evaluated.
+
+        Returns:
+            Students of a class.
+        """
         response = await self._request(
             "GET",
             "/api/v1/teacher/behaviors/studentsOfClass",
@@ -422,7 +638,28 @@ class AsyncBehaviors(AsyncAPIResource):
         page_number: int | None = None,
         page_size: int | None = None,
     ) -> BehaviorsResponse:
-        """Return behavior records of students matching the filter."""
+        """Return behavior records of students matching the filter.
+
+        Args:
+            school_year_id: ID of the requested school year.
+            from_date: Return records given on or after this date.
+            to_date: Return records given on or before this date.
+            class_id: ID of the class.
+            student_id: ID of the student.
+            type_of_behavior_id: Type of behavior record: N for a class book note, V for
+                an educational measure, Z for a behavior mark, P for a behavior
+                percentage.
+            kind_of_notes_class_book_id: ID of the kind of class book note.
+            kind_of_educational_measures_id: ID of the kind of educational measure.
+            kind_of_behavior_evaluations_id: ID of the kind of behavior evaluation.
+            order_by: Sort order. Defaults to newest first.
+            search: Full-text search.
+            page_number: Page number, starting at 1.
+            page_size: Page size.
+
+        Returns:
+            Behavior records matching a filter.
+        """
         response = await self._request(
             "GET",
             "/api/v1/teacher/behaviors",
@@ -445,7 +682,11 @@ class AsyncBehaviors(AsyncAPIResource):
         return parse_model(response, BehaviorsResponse)
 
     async def create(self, body: PostBehaviorRequest) -> None:
-        """Create a new behavior record."""
+        """Create a new behavior record.
+
+        Args:
+            body: Data of the new record.
+        """
         await self._request("POST", "/api/v1/teacher/behaviors", json=body.to_dict())
 
     async def list_for_student(
@@ -464,7 +705,27 @@ class AsyncBehaviors(AsyncAPIResource):
         search: str | None = None,
         records_filter: RecordsFilter | None = None,
     ) -> StudentBehaviorsResponse:
-        """Return behavior records of a student matching the filter."""
+        """Return behavior records of a student matching the filter.
+
+        Args:
+            student_id: ID of the student.
+            school_year_id: ID of the requested school year.
+            from_date: Return records given on or after this date.
+            to_date: Return records given on or before this date.
+            type_of_behavior_id: Type of behavior record: N for a class book note, V for
+                an educational measure, Z for a behavior mark, P for a behavior
+                percentage.
+            kind_of_notes_class_book_id: ID of the kind of class book note.
+            kind_of_educational_measures_id: ID of the kind of educational measure.
+            kind_of_behavior_evaluations_id: ID of the kind of behavior evaluation.
+            page_number: Page number, starting at 1.
+            page_size: Page size.
+            search: Full-text search.
+            records_filter: Filter of the records. Defaults to all records.
+
+        Returns:
+            Behavior records of a student.
+        """
         response = await self._request(
             "GET",
             f"/api/v1/students/{encode_path(student_id)}/behaviors",
@@ -492,7 +753,19 @@ class AsyncBehaviors(AsyncAPIResource):
         type_of_behavior_id: str,
         student_id: str | None = None,
     ) -> StudentBehaviorResponse:
-        """Return a single behavior record of a student."""
+        """Return a single behavior record of a student.
+
+        Args:
+            behavior_id: ID of the behavior record.
+            school_year_id: ID of the requested school year.
+            type_of_behavior_id: Type of behavior record: N for a class book note, V for
+                an educational measure, Z for a behavior mark, P for a behavior
+                percentage.
+            student_id: ID of the student.
+
+        Returns:
+            Single behavior record of a student.
+        """
         response = await self._request(
             "GET",
             f"/api/v1/students/behaviors/{encode_path(behavior_id)}",
@@ -507,7 +780,14 @@ class AsyncBehaviors(AsyncAPIResource):
     async def code_lists(
         self, *, school_year_id: str | None = None
     ) -> BehaviorCodeListsResponse:
-        """Return the code lists used by the behaviors module."""
+        """Return the code lists used by the behaviors module.
+
+        Args:
+            school_year_id: ID of the school year. Defaults to the current school year.
+
+        Returns:
+            Code lists used by the behaviors module.
+        """
         response = await self._request(
             "GET",
             "/api/v1/behaviors/codeLists",
@@ -516,7 +796,12 @@ class AsyncBehaviors(AsyncAPIResource):
         return parse_model(response, BehaviorCodeListsResponse)
 
     async def update(self, behavior_id: str, body: PutBehaviorRequest) -> None:
-        """Update an existing behavior record."""
+        """Update an existing behavior record.
+
+        Args:
+            behavior_id: ID of the behavior record.
+            body: Updated behavior record.
+        """
         await self._request(
             "PUT",
             f"/api/v1/teacher/behaviors/{encode_path(behavior_id)}",
@@ -526,7 +811,13 @@ class AsyncBehaviors(AsyncAPIResource):
     async def delete(
         self, behavior_id: str, *, type_of_behavior_id: str, school_year_id: str
     ) -> None:
-        """Delete a behavior record."""
+        """Delete a behavior record.
+
+        Args:
+            behavior_id: ID of the behavior record.
+            type_of_behavior_id: Type of the behavior record.
+            school_year_id: ID of the school year of the behavior record.
+        """
         await self._request(
             "DELETE",
             f"/api/v1/teacher/behaviors/{encode_path(behavior_id)}",
@@ -539,7 +830,15 @@ class AsyncBehaviors(AsyncAPIResource):
     async def sign(
         self, behavior_id: str, *, type_of_behavior_id: str, school_year_id: str
     ) -> None:
-        """Sign a single behavior record."""
+        """Sign a single behavior record.
+
+        Args:
+            behavior_id: ID of the behavior record.
+            type_of_behavior_id: Type of behavior record: N for a class book note, V for
+                an educational measure, Z for a behavior mark, P for a behavior
+                percentage.
+            school_year_id: ID of the requested school year.
+        """
         await self._request(
             "PUT",
             f"/api/v1/student/behaviors/{encode_path(behavior_id)}/sign",
@@ -552,7 +851,12 @@ class AsyncBehaviors(AsyncAPIResource):
     async def sign_many(
         self, student_id: str, body: PutMultipleSignBehaviorsRequest
     ) -> None:
-        """Sign multiple behavior records of a student."""
+        """Sign multiple behavior records of a student.
+
+        Args:
+            student_id: ID of the student.
+            body: Behavior records to sign.
+        """
         await self._request(
             "PUT",
             f"/api/v1/student/{encode_path(student_id)}/behaviors/sign",
