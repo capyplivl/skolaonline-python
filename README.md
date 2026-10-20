@@ -3,6 +3,7 @@
 [![CI](https://github.com/capyplivl/skolaonline-python/actions/workflows/ci.yml/badge.svg)](https://github.com/capyplivl/skolaonline-python/actions/workflows/ci.yml)
 [![PyPI](https://img.shields.io/pypi/v/skolaonline)](https://pypi.org/project/skolaonline/)
 [![Python](https://img.shields.io/pypi/pyversions/skolaonline)](https://pypi.org/project/skolaonline/)
+[![Downloads](https://img.shields.io/pepy/dt/skolaonline)](https://pepy.tech/projects/skolaonline)
 [![License](https://img.shields.io/github/license/capyplivl/skolaonline-python)](https://github.com/capyplivl/skolaonline-python/blob/main/LICENSE)
 
 A modern, fully typed Python SDK for the [Škola OnLine](https://www.skolaonline.cz/) API
